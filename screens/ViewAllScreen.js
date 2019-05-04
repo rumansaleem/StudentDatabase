@@ -33,6 +33,7 @@ export default class CreateStudentScreen extends Component {
   constructor(props) {
     super(props);
     this.search = this.search.bind(this)
+    this.setSearchString = this.setSearchString.bind(this)
     this.state = {
       search: '',
       loading: false,
@@ -44,6 +45,10 @@ export default class CreateStudentScreen extends Component {
     this.search();
   }
 
+  setSearchString(search) {
+    this.setState({search});
+  }
+  
   search() {
     const searchString = this.state.search;
     this.setState(() => ({loading: true}));
@@ -60,40 +65,31 @@ export default class CreateStudentScreen extends Component {
   }
   
   render() {
-    renderSeperator = () => {
-      return (
-        <View style={{
-          height: 1,
-          backgroundColor: '#cdcded',
-        }}></View>
-      )
-    }
-    renderHeader = () => {
-      return (
-        <View style={[styles.row]}>
-          <TextInput
-            placeholder="Search..."
-            underlineColorAndroid="#808"
-            style={[styles.expand, styles.input]}
-            onChangeText={(search) => this.setState(state => ({ ...state, search }))}
-            value={this.state.search} />
-          <TouchableNativeFeedback
-            background={TouchableNativeFeedback.Ripple()}
-            onPress={this.search}>
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>Search</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-      )
-    }
+    renderSeperator = () =>  <View style={{ height: 1, backgroundColor: '#cdcded'}}></View>;
     return (
       <View style={styles.container}>
         <FlatList
           data={this.state.data}
           style="{styles.list}"
           keyExtractor={(item) => item.id.toString() }
-          ListHeaderComponent={renderHeader}
+          ListHeaderComponent={
+            <View style={[styles.row]}>
+              <TextInput
+                placeholder="Search..."
+                underlineColorAndroid="#808"
+                style={[styles.expand, styles.input]}
+                value={this.state.search}
+                onChangeText={this.setSearchString}
+              />
+              <TouchableNativeFeedback
+                background={TouchableNativeFeedback.Ripple()}
+                onPress={this.search}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Search</Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+          }
           ItemSeparatorComponent={renderSeperator}
           onRefresh={this.search}
           refreshing={this.state.loading}

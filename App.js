@@ -8,6 +8,7 @@
 
 import React, {Component} from 'react';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
+import { sendCountNotification }  from './services/pushNotifications';
 
 import ViewAllScreen from './screens/ViewAllScreen';
 import CreateStudentScreen from './screens/CreateStudentScreen';
